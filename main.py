@@ -141,6 +141,8 @@ def main():
                 robot.GripperCtrl(gripper_value, 3000, 0x01, 0)
 
             t2 = time.time()
+            print(f"{list(map(lambda n: round(n * 1000), state["xyz_rpy"] ))}")
+            print(f"{controller.show_d_local()}")
             print(f"Update time: {(t2 - t1) *1000:.3f}ms")
             t1 = t2
 
