@@ -118,6 +118,8 @@ class GamepadBase:
         self.joystick = None
         self.joystick_connected = False
 
+        self.disp = np.zeros(3)
+
         # Create button objects
         self.buttons = {
             'a': Button(), 'b': Button(), 'x': Button(), 'y': Button(),
@@ -327,8 +329,8 @@ class GamepadBase:
         d_local = np.array([left_y, -left_x, -right_y]) * self.translation_step * speed_factor
         r_local = np.array([hat[0], -hat[1], right_x]) * self.rotation_step * speed_factor
 
-        # If there is any input, update inverse kinematics
-        if np.any(d_local) or np.any(r_local):
+        self.disp = d_world_xyz[:]
+
             # Get current pose
             current_position = self.xyz_wxyz[0:3]
             current_orientation = R.from_quat(self._wxyz_to_xyzw(self.xyz_wxyz[3:]))
@@ -670,6 +672,9 @@ class GamepadBase:
             "low_level_mode": self.low_level_mode,
             "joystick_connected": self.joystick_connected
         }
+    
+    def show_d_local(self):
+        return(self.disp[:])
 
     def print_state(self):
         """Print current status of robot arm"""
