@@ -62,7 +62,7 @@ class GamepadBase:
 
         # Robot arm status
         self.joint_angles = np.zeros(6)
-        self.up_level_mode = "joint"
+        self.up_level_mode = "pose"
         self.low_level_mode = "joint"
         self.command_mode = 0x00
 
