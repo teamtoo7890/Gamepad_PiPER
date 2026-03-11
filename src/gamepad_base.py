@@ -310,36 +310,30 @@ class GamepadBase:
             self._update_vis()
 
     def _update_pose_mode(self):
-        """Control in pose coordinate mode (based on end coordinate system)"""
-        # Get current speed factor
+        """Control in pose coordinate mode (hybrid: local XY, world Z)"""
         speed_factor = self.speed_factors[self.speed_factor_index]
 
-        # Left joystick: X and Y movement in end coordinate system
         left_x = self._apply_deadzone(self._get_axis_value('left_x'))
         left_y = self._apply_deadzone(self._get_axis_value('left_y'))
-
-        # Right joystick: Z movement and rotation around Z in end coordinate system
         right_x = self._apply_deadzone(self._get_axis_value('right_x'))
         right_y = self._apply_deadzone(self._get_axis_value('right_y'))
-
-        # Direction keys: Rotation around X and Y in end coordinate system
         hat = self._get_hat_value('dpad')
 
-        # Calculate displacement and rotation increments in end coordinate system
-        d_local = np.array([left_y, -left_x, -right_y]) * self.translation_step * speed_factor
+        # All translations in world frame
+        d_world_xyz = np.array([-right_y, -left_x, -left_y]) * self.translation_step * speed_factor
+
         r_local = np.array([hat[0], -hat[1], right_x]) * self.rotation_step * speed_factor
 
         self.disp = d_world_xyz[:]
 
-            # Get current pose
+        if np.any(d_world_xyz) or np.any(r_local):
             current_position = self.xyz_wxyz[0:3]
             current_orientation = R.from_quat(self._wxyz_to_xyzw(self.xyz_wxyz[3:]))
 
-            # Calculate new pose (based on end coordinate system)
+            new_position = current_position + d_world_xyz
+
             R_local = R.from_euler('xyz', r_local, degrees=True)
             new_orientation = current_orientation * R_local
-            d_world = current_orientation.apply(d_local)
-            new_position = current_position + d_world
 
             self._pose_to_joint(new_position, new_orientation)
             self._update_vis()
