@@ -4,6 +4,7 @@ import viser
 import queue
 import pygame
 import yourdfpy
+import pyspacemouse
 import numpy as np
 import multiprocessing as mp
 from viser.extras import ViserUrdf
