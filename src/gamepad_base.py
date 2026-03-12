@@ -321,8 +321,12 @@ class GamepadBase:
         right_y = self._apply_deadzone(self._get_axis_value('right_y'))
         hat = self._get_hat_value('dpad')
 
+        spm_x = self._apply_deadzone(self.spacemouse.read().x)
+        spm_y = self._apply_deadzone(self.spacemouse.read().y)
+        spm_z = self._apply_deadzone(self.spacemouse.read().z)
+
         # All translations in world frame
-        d_world_xyz = np.array([-right_y, -left_x, -left_y]) * self.translation_step * speed_factor
+        d_world_xyz = np.array([spm_y, -spm_x, spm_z]) * self.translation_step * speed_factor
 
         r_local = np.array([hat[0], -hat[1], right_x]) * self.rotation_step * speed_factor
 
