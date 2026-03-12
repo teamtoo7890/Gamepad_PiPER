@@ -670,6 +670,9 @@ class GamepadBase:
     
     def show_d_local(self):
         return(self.disp[:])
+    
+    def close_psm(self):
+        return(self.spacemouse.close())
 
     def print_state(self):
         """Print current status of robot arm"""
