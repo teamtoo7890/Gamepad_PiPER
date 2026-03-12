@@ -150,6 +150,7 @@ def main():
 
     except KeyboardInterrupt:
         print("\nProgram exited")
+        controller.close_psm()
         pygame.quit()
 
 if __name__ == "__main__":
