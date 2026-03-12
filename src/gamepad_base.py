@@ -618,6 +618,15 @@ class GamepadBase:
 
     def update(self):
         """Update joystick input and calculate robot arm status"""
+
+        # if self.spacemouse.read().buttons[0] and not self.arm_connected:
+        #     self._toggle_arm_connection()
+        #     self._update_vis()
+
+        # if self.spacemouse.read().buttons[1] and self.arm_connected:
+        #     self._toggle_arm_connection()
+        #     self._update_vis()
+
         # Check joystick connection status
         if not self._handle_joystick_events():
             return
