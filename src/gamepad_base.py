@@ -60,6 +60,7 @@ class GamepadBase:
 
         # Detect system platform
         self.system_platform = pygame.display.get_driver()
+        self.spacemouse = pyspacemouse.open()
 
         # Robot arm status
         self.joint_angles = np.zeros(6)
