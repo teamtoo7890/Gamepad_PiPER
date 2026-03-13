@@ -29,62 +29,66 @@ class Teleop(RoboticArmController):
 
     def _connect_and_enable_arm(self):
         """Connect and enable physical robot arm."""
-        if not self.arm_connected:
-            self.interface.ConnectPort()
-            self.arm_connected = True
-        if not self.arm_enabled:
-            while not self.interface.EnablePiper():
-                time.sleep(0.01)
-            self.arm_enabled = True
-            move_code = 0x01
-            if self.low_level_mode == "pose":
-                move_code = 0x00
-            self.interface.ModeCtrl(0x01, move_code, self.movement_speeds[self.movement_speed_index], self.command_mode)
-            time.sleep(0.1)
-            self._go_home()
+        if self.interface is not None:
+            if not self.arm_connected:
+                self.interface.ConnectPort()
+                self.arm_connected = True
+            if not self.arm_enabled:
+                while not self.interface.EnablePiper():
+                    time.sleep(0.01)
+                self.arm_enabled = True
+                move_code = 0x01
+                if self.low_level_mode == "pose":
+                    move_code = 0x00
+                self.interface.ModeCtrl(0x01, move_code, self.movement_speeds[self.movement_speed_index], self.command_mode)
+                time.sleep(0.1)
+                self._go_home()
 
     def _go_home_and_disable(self):
         """Return to home and disable physical robot arm."""
-        if self.arm_connected and self.arm_enabled:
-            self._go_home()
-            self.interface.GripperCtrl(0, 1000, 0, 0)
-            time.sleep(2)
-            self.interface.MotionCtrl_1(0x01, 0, 0)
-            time.sleep(1)
-            self.interface.MotionCtrl_1(0x02, 0, 0)
-            self.arm_enabled = False
-            self.arm_connected = False
+        if self.interface is not None:
+            if self.arm_connected and self.arm_enabled:
+                self._go_home()
+                self.interface.GripperCtrl(0, 1000, 0, 0)
+                time.sleep(2)
+                self.interface.MotionCtrl_1(0x01, 0, 0)
+                time.sleep(1)
+                self.interface.MotionCtrl_1(0x02, 0, 0)
+                self.arm_enabled = False
+                self.arm_connected = False
 
     def _change_to_0x00_mode(self):
         """Change to 0x00 command mode."""
-        self._go_home_and_disable()
-        time.sleep(0.1)
-        move_code = 0x01
-        if self.low_level_mode == "pose":
-            move_code = 0x00
-        self.interface.ModeCtrl(0x01, move_code, self.movement_speeds[self.movement_speed_index], 0x00)
-        time.sleep(1)
-        while not self.interface.EnablePiper():
-            time.sleep(0.01)
-        time.sleep(0.1)
-        self.interface.ModeCtrl(0x01, move_code, self.movement_speeds[self.movement_speed_index], 0x00)
-        time.sleep(0.01)
-        joints = np.round(np.degrees(self.joint_angles[:6]) * 1000).astype(int).tolist()
-        self.interface.JointCtrl(*joints)
-        self.arm_connected = True
-        self.arm_enabled = True
-
-    def _toggle_command_mode(self):
-        """Toggle command mode between 0x00 and 0xAD."""
-        if self.command_mode == 0x00:
+        if self.interface is not None:
+            self._go_home_and_disable()
+            time.sleep(0.1)
             move_code = 0x01
             if self.low_level_mode == "pose":
                 move_code = 0x00
-            self.interface.ModeCtrl(0x01, move_code, self.movement_speeds[self.movement_speed_index], 0xAD)
-            self.command_mode = 0xAD
-        elif self.command_mode == 0xAD:
-            self._change_to_0x00_mode()
-            self.command_mode = 0x00
+            self.interface.ModeCtrl(0x01, move_code, self.movement_speeds[self.movement_speed_index], 0x00)
+            time.sleep(1)
+            while not self.interface.EnablePiper():
+                time.sleep(0.01)
+            time.sleep(0.1)
+            self.interface.ModeCtrl(0x01, move_code, self.movement_speeds[self.movement_speed_index], 0x00)
+            time.sleep(0.01)
+            joints = np.round(np.degrees(self.joint_angles[:6]) * 1000).astype(int).tolist()
+            self.interface.JointCtrl(*joints)
+            self.arm_connected = True
+            self.arm_enabled = True
+
+    def _toggle_command_mode(self):
+        """Toggle command mode between 0x00 and 0xAD."""
+        if self.interface is not None:
+            if self.command_mode == 0x00:
+                move_code = 0x01
+                if self.low_level_mode == "pose":
+                    move_code = 0x00
+                self.interface.ModeCtrl(0x01, move_code, self.movement_speeds[self.movement_speed_index], 0xAD)
+                self.command_mode = 0xAD
+            elif self.command_mode == 0xAD:
+                self._change_to_0x00_mode()
+                self.command_mode = 0x00
 
 def get_current_path():
     """Get current path"""
