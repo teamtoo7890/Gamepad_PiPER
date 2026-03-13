@@ -22,10 +22,12 @@ class Teleop(RoboticArmController):
 
     def _go_home(self):
         """Return to home position with physical robot arm control."""
-        if self.arm_connected and self.arm_enabled:
-            self.interface.JointCtrl(0, 0, 0, 0, 0, 0)
-            self.joint_angles = np.zeros(6)
-            self._joint_to_pose()
+        if self.interface is not None:
+            if self.arm_connected and self.arm_enabled:
+                self.interface.JointCtrl(0, 0, 0, 0, 0, 0)
+        self.joint_angles = np.zeros(6)
+        self._joint_to_pose()
+            
 
     def _connect_and_enable_arm(self):
         """Connect and enable physical robot arm."""
