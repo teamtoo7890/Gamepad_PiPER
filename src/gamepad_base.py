@@ -625,6 +625,11 @@ class GamepadBase:
         """Update joystick input and calculate robot arm status"""
 
         self.psm_state = self.spacemouse.read()
+        if self.psm_buttons["left"].update(self.psm_state.buttons[0]):
+            self._go_home()
+            self._update_vis()
+        self._update_pose_mode()
+        
         # if self.spacemouse.read().buttons[0] and not self.arm_connected:
         #     self._toggle_arm_connection()
         #     self._update_vis()
