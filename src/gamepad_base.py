@@ -320,20 +320,25 @@ class GamepadBase:
         """Control in pose coordinate mode (hybrid: local XY, world Z)"""
         speed_factor = self.speed_factors[self.speed_factor_index]
 
-        left_x = self._apply_deadzone(self._get_axis_value('left_x'))
-        left_y = self._apply_deadzone(self._get_axis_value('left_y'))
-        right_x = self._apply_deadzone(self._get_axis_value('right_x'))
-        right_y = self._apply_deadzone(self._get_axis_value('right_y'))
-        hat = self._get_hat_value('dpad')
+        # left_x = self._apply_deadzone(self._get_axis_value('left_x'))
+        # left_y = self._apply_deadzone(self._get_axis_value('left_y'))
+        # right_x = self._apply_deadzone(self._get_axis_value('right_x'))
+        # right_y = self._apply_deadzone(self._get_axis_value('right_y'))
+        # hat = self._get_hat_value('dpad')
 
-        spm_x = self._apply_deadzone(self.spacemouse.read().x)
-        spm_y = self._apply_deadzone(self.spacemouse.read().y)
-        spm_z = self._apply_deadzone(self.spacemouse.read().z)
+        spm_x = self._apply_deadzone(self.psm_state.x)
+        spm_y = self._apply_deadzone(self.psm_state.y)
+        spm_z = self._apply_deadzone(self.psm_state.z)
+
+        spm_ro = self._apply_deadzone(self.psm_state.roll)
+        spm_pi = self._apply_deadzone(self.psm_state.pitch)
+        spm_ya = self._apply_deadzone(self.psm_state.yaw)
 
         # All translations in world frame
         d_world_xyz = np.array([spm_y, -spm_x, spm_z]) * self.translation_step * speed_factor
 
-        r_local = np.array([hat[0], -hat[1], right_x]) * self.rotation_step * speed_factor
+        # r_local = np.array([hat[0], -hat[1], right_x]) * self.rotation_step * speed_factor
+        r_local = np.array([spm_ya, spm_pi, spm_ro]) * self.rotation_step * speed_factor
 
         self.disp = d_world_xyz[:]
 
