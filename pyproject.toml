@@ -5,6 +5,9 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "piper-sdk>=0.6.1",
+    "pygame>=2.6.1",
     "pyspacemouse>=2.0.0",
     "pytracik>=0.0.3",
+    "viser>=1.0.24",
 ]
