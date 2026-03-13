@@ -119,30 +119,31 @@ def main():
             controller.print_state()
 
             # Control physical robot arm movement
-            if state["arm_connected"] and state["arm_enabled"]:
-                move_speed = state["movement_speed"]
-                cmd_mode = state["command_mode"]
-                low_level_mode = state["low_level_mode"]
-                
-                if low_level_mode == "joint":
-                    # Low-level joint control
-                    joints = state["joints"]
-                    joints_ctl = np.round(np.degrees(joints[:6]) * 1000).astype(int).tolist()
-                    robot.ModeCtrl(0x01, 0x01, move_speed, cmd_mode)
-                    robot.JointCtrl(*joints_ctl)
-                elif low_level_mode == "pose":
-                    # Low-level pose control
-                    xyz_rpy = state["xyz_rpy"]
-                    xyz_rpy[:3] = np.round(xyz_rpy[:3] * 1e6)
-                    xyz_rpy[3:] = np.round(xyz_rpy[3:] * 1000)
-                    xyz_rpy = xyz_rpy.astype(int).tolist()
-                    robot.ModeCtrl(0x01, 0x00, move_speed, cmd_mode)
-                    robot.EndPoseCtrl(*xyz_rpy)
+            if robot is not None:
+                if state["arm_connected"] and state["arm_enabled"]:
+                    move_speed = state["movement_speed"]
+                    cmd_mode = state["command_mode"]
+                    low_level_mode = state["low_level_mode"]
+                    
+                    if low_level_mode == "joint":
+                        # Low-level joint control
+                        joints = state["joints"]
+                        joints_ctl = np.round(np.degrees(joints[:6]) * 1000).astype(int).tolist()
+                        robot.ModeCtrl(0x01, 0x01, move_speed, cmd_mode)
+                        robot.JointCtrl(*joints_ctl)
+                    elif low_level_mode == "pose":
+                        # Low-level pose control
+                        xyz_rpy = state["xyz_rpy"]
+                        xyz_rpy[:3] = np.round(xyz_rpy[:3] * 1e6)
+                        xyz_rpy[3:] = np.round(xyz_rpy[3:] * 1000)
+                        xyz_rpy = xyz_rpy.astype(int).tolist()
+                        robot.ModeCtrl(0x01, 0x00, move_speed, cmd_mode)
+                        robot.EndPoseCtrl(*xyz_rpy)
 
-                # Low-level gripper control
-                gripper_state = state["gripper"]
-                gripper_value = int(controller.gripper_max_width * gripper_state * 1e4)
-                robot.GripperCtrl(gripper_value, 3000, 0x01, 0)
+                    # Low-level gripper control
+                    gripper_state = state["gripper"]
+                    gripper_value = int(controller.gripper_max_width * gripper_state * 1e4)
+                    robot.GripperCtrl(gripper_value, 3000, 0x01, 0)
 
             t2 = time.time()
             print(f"{list(map(lambda n: round(n * 1000), state["xyz_rpy"] ))}")
