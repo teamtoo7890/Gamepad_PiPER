@@ -95,8 +95,12 @@ def main():
     urdf_path = os.path.join(get_current_path(), "piper/piper.urdf")
     mesh_path = os.path.join(get_current_path(), "piper/meshes/")
 
+    simulation = True
+    robot = None
+
     # Initialize low-level interface
-    robot = C_PiperInterface_V2()
+    if not simulation:
+        robot = C_PiperInterface_V2()
 
     # Initialize control class
     controller = Teleop(robot, urdf_path, mesh_path, "/base_link", "link6")
