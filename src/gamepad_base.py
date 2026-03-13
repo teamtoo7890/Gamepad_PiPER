@@ -61,6 +61,11 @@ class GamepadBase:
         # Detect system platform
         self.system_platform = pygame.display.get_driver()
         self.spacemouse = pyspacemouse.open()
+        self.psm_state = None
+        self.psm_buttons = {
+            "left": Button(),
+            "right": Button()
+        }
 
         # Robot arm status
         self.joint_angles = np.zeros(6)
@@ -619,6 +624,7 @@ class GamepadBase:
     def update(self):
         """Update joystick input and calculate robot arm status"""
 
+        self.psm_state = self.spacemouse.read()
         # if self.spacemouse.read().buttons[0] and not self.arm_connected:
         #     self._toggle_arm_connection()
         #     self._update_vis()
