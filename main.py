@@ -2,7 +2,13 @@ import os
 import time
 import pygame
 import numpy as np
-from piper_sdk import *
+
+simulation = True
+if not simulation:
+    from piper_sdk import *
+
+# simulation
+# from piper_sdk import *
 
 # Choose the appropriate controller based on the inverse kinematics algorithm
 # from src.gamepad_pin import RoboticArmController
