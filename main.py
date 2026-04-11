@@ -5,8 +5,12 @@ import numpy as np
 import argparse
 from piper_sdk import *
 
-# simulation
-# from piper_sdk import *
+parser = argparse.ArgumentParser(
+                    prog='Gamepad_PiPER',
+                    description='Gamepad demo for the PiPER arm (with spacemouse support)')
+parser.add_argument("-r", "--real", help="Use simulation AND real arm",
+                    action="store_true")
+args = parser.parse_args()
 
 # Choose the appropriate controller based on the inverse kinematics algorithm
 # from src.gamepad_pin import RoboticArmController
