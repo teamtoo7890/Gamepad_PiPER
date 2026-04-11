@@ -5,5 +5,5 @@ with pyspacemouse.open() as device:
     while True:
         state = device.read()
         print(state.x, state.y, state.z)
-        print(state.buttons[0])
+        print(f'{state.buttons[0]} {state.buttons[14]}')
 
