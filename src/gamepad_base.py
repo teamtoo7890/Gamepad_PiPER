@@ -634,6 +634,10 @@ class GamepadBase:
             self._go_home()
             self._update_vis()
         self._update_pose_mode()
+
+        if self.psm_buttons["right"].update(self.psm_state.buttons[14]):
+            self._toggle_arm_connection()
+            self._update_vis()
         
         # if self.spacemouse.read().buttons[0] and not self.arm_connected:
         #     self._toggle_arm_connection()
