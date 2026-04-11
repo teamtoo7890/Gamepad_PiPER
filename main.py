@@ -3,10 +3,7 @@ import time
 import pygame
 import numpy as np
 import argparse
-
-simulation = False
-if not simulation:
-    from piper_sdk import *
+from piper_sdk import *
 
 # simulation
 # from piper_sdk import *
