@@ -109,7 +109,7 @@ def main():
     urdf_path = os.path.join(get_current_path(), "piper/piper.urdf")
     mesh_path = os.path.join(get_current_path(), "piper/meshes/")
 
-    simulation = False
+    simulation = not args.real
     robot = None
 
     # Initialize low-level interface
