@@ -114,7 +114,10 @@ def main():
 
     # Initialize low-level interface
     if not simulation:
+        print("STARTING IN REAL ARM MODE")
         robot = C_PiperInterface_V2()
+    else:
+        print("STARTING IN SIMULATION MODE")
 
     # Initialize control class
     controller = Teleop(robot, urdf_path, mesh_path, "/base_link", "link6")
