@@ -14,6 +14,24 @@ from scipy.spatial.transform import Rotation as R
 def visualization_process(urdf, root_name, joint_queue: mp.Queue, shutdown_event):
     """Independent process running Viser visualization server"""
     server = viser.ViserServer()
+    # Add some common GUI elements: number inputs, sliders, vectors, checkboxes.
+    with server.gui.add_folder("Read-only"):
+        x_pos_gui = server.gui.add_number(
+            "X",
+            initial_value=0,
+            disabled=True,
+        )
+        y_pos_gui = server.gui.add_number(
+            "Y",
+            initial_value=0,
+            disabled=True,
+        )
+        z_pos_gui = server.gui.add_number(
+            "Z",
+            initial_value=0,
+            disabled=True,
+        )
+
     server.scene.add_grid("/ground", width=2.0, height=2.0)
     urdf_vis = ViserUrdf(server, urdf, root_node_name=root_name)
 
@@ -24,6 +42,9 @@ def visualization_process(urdf, root_name, joint_queue: mp.Queue, shutdown_event
                 for _ in range(joint_queue.qsize()):
                     joints_deg = joint_queue.get_nowait()
                 urdf_vis.update_cfg(joints_deg)
+                x_pos_gui.value = 1
+                y_pos_gui.value = 2
+                z_pos_gui.value = 3
             except queue.Empty:
                 continue
             except Exception as e:
