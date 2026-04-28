@@ -8,6 +8,9 @@ dependencies = [
     "piper-sdk>=0.6.1",
     "pygame>=2.6.1",
     "pyspacemouse>=2.0.0",
-    "pytracik>=0.0.3",
+    "pytracik",
     "viser>=1.0.24",
 ]
+
+[tool.uv.sources]
+pytracik = { git = "https://github.com/chenhaox/pytracik" }
