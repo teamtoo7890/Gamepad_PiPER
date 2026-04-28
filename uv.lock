@@ -173,7 +173,7 @@ requires-dist = [
     { name = "numpy", specifier = "<=1.26.0" },
     { name = "piper-sdk", specifier = ">=0.6.1" },
     { name = "pygame", specifier = "<2.6.2" },
-    { name = "pytracik", specifier = ">=0.0.3" },
+    { name = "pytracik", git = "https://github.com/chenhaox/pytracik" },
     { name = "scipy", specifier = ">=1.16.3" },
     { name = "setuptools", specifier = "<80.9.0" },
     { name = "viser", specifier = ">=1.0.26" },
@@ -675,18 +675,9 @@ wheels = [
 [[package]]
 name = "pytracik"
 version = "0.0.3"
-source = { registry = "https://pypi.org/simple" }
+source = { git = "https://github.com/chenhaox/pytracik#850645b49c0f2a20d825115a01602bb00757941a" }
 dependencies = [
     { name = "numpy" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/c3/30/e14813249054ee0458347982cbe2f9a58eefc2fc7171ed9e2b01e816adb8/pytracik-0.0.3.tar.gz", hash = "sha256:ed4ac2bc59c22c2e8b6793e65adc84059393d53285f0a76825eb5901cb001e09", size = 74937, upload-time = "2026-03-08T16:52:47.396Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/ec/db/5fdd6d58538d14c36d1f2ca1ec363ec676505ef72e1c184528413ffc0be5/pytracik-0.0.3-cp312-cp312-macosx_15_0_arm64.whl", hash = "sha256:4588f9a2bcf9139991e4d1f4e301f163846b39e2d1108f5347d65c3703fda14a", size = 5627775, upload-time = "2026-03-08T16:52:34.372Z" },
-    { url = "https://files.pythonhosted.org/packages/0a/5c/3df50a600aae33284dde78d20850f72ad607d0ccb6c6ae4c8ace2bc4c177/pytracik-0.0.3-cp312-cp312-manylinux_2_34_x86_64.whl", hash = "sha256:7c08ae092b140bec81dcc629b6357b66ec17ccf52d4e58673f92bbb0fd05ff97", size = 998285, upload-time = "2026-03-08T16:52:36.092Z" },
-    { url = "https://files.pythonhosted.org/packages/77/47/e0e36886165f6b8df60dc193bb0051b26780c15620ee790127813979c278/pytracik-0.0.3-cp312-cp312-win_amd64.whl", hash = "sha256:22d7374c235d5614f629629d67f954eec04e04221d34e13c3baf67ba6c812394", size = 512753, upload-time = "2026-03-08T16:52:37.75Z" },
-    { url = "https://files.pythonhosted.org/packages/27/21/9b6abae852005bdd1252d6f763c01a45fa23adc02dffc7d72a9acfddcd5c/pytracik-0.0.3-cp313-cp313-macosx_15_0_arm64.whl", hash = "sha256:766ea115400853a9bfe8aaadab17b5646ce43beff067d1822384efd5c2764899", size = 5557025, upload-time = "2026-03-08T16:52:39.36Z" },
-    { url = "https://files.pythonhosted.org/packages/54/82/a8c734fe52061d7b16fa0d10d0ed4df57aa9982b390aaacaa8c05f54e44a/pytracik-0.0.3-cp313-cp313-manylinux_2_34_x86_64.whl", hash = "sha256:d56e81d69ffc94eb576854307b280ac0280248c2b67fd3df45d4027867234453", size = 998400, upload-time = "2026-03-08T16:52:41.036Z" },
-    { url = "https://files.pythonhosted.org/packages/3e/18/f57633083b322675080551a113b57386b35bc8025bbfc19b649acc912e68/pytracik-0.0.3-cp313-cp313-win_amd64.whl", hash = "sha256:cab9550fba0806d5ef87b1cac32787be5e620ae49cedc6cbd0c971fbdeace80f", size = 512820, upload-time = "2026-03-08T16:52:42.72Z" },
 ]
 
 [[package]]
