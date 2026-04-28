@@ -81,7 +81,11 @@ class GamepadBase:
 
         # Detect system platform
         self.system_platform = pygame.display.get_driver()
-        self.spacemouse = pyspacemouse.open()
+        try:
+            self.spacemouse = pyspacemouse.open()
+        except RuntimeError as e:
+            print(f'pyspacemouse error: {e}')
+            self.spacemouse = None
         self.psm_state = None
         self.psm_buttons = {
             "left": Button(),
@@ -650,15 +654,16 @@ class GamepadBase:
     def update(self):
         """Update joystick input and calculate robot arm status"""
 
-        self.psm_state = self.spacemouse.read()
-        if self.psm_buttons["left"].update(self.psm_state.buttons[0]):
-            self._go_home()
-            self._update_vis()
-        self._update_pose_mode()
+        if self.spacemouse is not None:
+            self.psm_state = self.spacemouse.read()
+            if self.psm_buttons["left"].update(self.psm_state.buttons[0]):
+                self._go_home()
+                self._update_vis()
+            self._update_pose_mode()
 
-        if self.psm_buttons["right"].update(self.psm_state.buttons[14]):
-            self._toggle_arm_connection()
-            self._update_vis()
+            if self.psm_buttons["right"].update(self.psm_state.buttons[14]):
+                self._toggle_arm_connection()
+                self._update_vis()
         
         # if self.spacemouse.read().buttons[0] and not self.arm_connected:
         #     self._toggle_arm_connection()
@@ -727,7 +732,9 @@ class GamepadBase:
         return(self.disp[:])
     
     def close_psm(self):
-        return(self.spacemouse.close())
+        if self.spacemouse is not None:
+            return(self.spacemouse.close())
+        return
 
     def print_state(self):
         """Print current status of robot arm"""
